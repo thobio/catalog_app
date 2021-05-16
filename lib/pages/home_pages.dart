@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:catalog_app/Utils/routes.dart';
 import 'package:catalog_app/model/catalog.dart';
 import 'package:catalog_app/pages/home_details_page.dart';
-import 'package:catalog_app/widgets/themes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -35,7 +36,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyTheme.creamColor,
+      backgroundColor: context.canvasColor,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          CupertinoIcons.cart,
+        ),
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            MyRoutes.cartRoute,
+          );
+        },
+        backgroundColor: context.theme.buttonColor,
+      ),
       body: SafeArea(
         child: Container(
           padding: Vx.m32,
@@ -65,7 +78,7 @@ class CatalogHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        "Catalog App".text.xl5.make(),
+        "Catalog App".text.xl5.color(context.theme.accentColor).make(),
         "Trending products".text.xl2.make(),
       ],
     );
@@ -86,12 +99,12 @@ class CatalogList extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => HomeDetailPage(
-                  catalog: CatalogModel.items[index],
+                  catalog: CatalogModel.getByPosition(index),
                 ),
               ),
             ),
             child: CatalogItem(
-              catalog: CatalogModel.items[index],
+              catalog: CatalogModel.getByPosition(index),
             ),
           );
         });
@@ -122,7 +135,7 @@ class CatalogItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                catalog.name.text.lg.color(MyTheme.darkCreamColor).bold.make(),
+                catalog.name.text.lg.color(context.accentColor).bold.make(),
                 catalog.desc.text.textStyle(context.captionStyle).make(),
                 10.heightBox,
                 ButtonBar(
@@ -133,14 +146,14 @@ class CatalogItem extends StatelessWidget {
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
-                          MyTheme.darkBluishColor,
+                          context.theme.buttonColor,
                         ),
                         shape: MaterialStateProperty.all(
                           StadiumBorder(),
                         ),
                       ),
                       onPressed: () {},
-                      child: "Buy".text.make(),
+                      child: "Add to cart".text.make(),
                     )
                   ],
                 ).pOnly(right: 8.0),
@@ -149,7 +162,14 @@ class CatalogItem extends StatelessWidget {
           )
         ],
       ),
-    ).white.rounded.square(150).make().py16();
+    )
+        .color(
+          context.theme.cardColor,
+        )
+        .rounded
+        .square(150)
+        .make()
+        .py16();
   }
 }
 
@@ -163,7 +183,7 @@ class CatalogImage extends StatelessWidget {
         .box
         .rounded
         .p8
-        .color(MyTheme.creamColor)
+        .color(context.canvasColor)
         .make()
         .p16()
         .wh40(context);

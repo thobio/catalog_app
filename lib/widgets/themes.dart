@@ -4,8 +4,12 @@ import 'package:velocity_x/velocity_x.dart';
 
 class MyTheme {
   static ThemeData lightTheme(BuildContext context) => ThemeData(
+        brightness: Brightness.light,
         primarySwatch: Colors.deepPurple,
         fontFamily: GoogleFonts.lato().fontFamily,
+        canvasColor: creamColor,
+        buttonColor: darkBluishColor,
+        accentColor: darkBluishColor,
         appBarTheme: AppBarTheme(
           color: Colors.white,
           elevation: 0.0,
@@ -15,6 +19,22 @@ class MyTheme {
       );
   static ThemeData darkTheme(BuildContext context) => ThemeData(
         brightness: Brightness.dark,
+        primarySwatch: Colors.deepPurple,
+        fontFamily: GoogleFonts.lato().fontFamily,
+        cardColor: Colors.black,
+        canvasColor: darkCreamColor,
+        buttonColor: lightBluishColor,
+        accentColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          color: Colors.white,
+          elevation: 0.0,
+          iconTheme: IconThemeData(color: Colors.white),
+          textTheme: Theme.of(context).textTheme.copyWith(
+                headline6: context.textTheme.headline6.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+        ),
       );
   //Colors
   static Color creamColor = Color(0xfff5f5f5);
